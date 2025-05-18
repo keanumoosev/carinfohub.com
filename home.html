@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Car Info Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <style>
+    /* Reset & base */
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      background: #f0f2f5;
+      color: #333;
+    }
+
+    a {
+      text-decoration: none;
+      color: #ad0409;
+      transition: color 0.3s;
+    }
+
+    a:hover {
+      color: #ad0409;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: #ad0409;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .navbar h1 {
+      font-weight: 600;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 0;
+    }
+
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar ul li a {
+      color: white;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .navbar ul li a:hover {
+      color: #cce4ff;
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 4rem 1rem;
+      background: linear-gradient(90deg, #ad0409 0%, #aa040a 100%);
+      color: white;
+      margin-bottom: 2rem;
+    }
+
+    .hero h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      max-width: 600px;
+      margin: 0 auto;
+      text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Cars Section */
+    #cars {
+      max-width: 1200px;
+      margin: 0 auto 4rem auto;
+      padding: 0 1rem;
+    }
+
+    .section-title {
+      text-align: center;
+      font-weight: 600;
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      color: #ad0409;
+    }
+
+    /* Filter Form */
+    .filter-form {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .filter-form label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    .filter-form input,
+    .filter-form select {
+      width: 100%;
+      padding: 0.5rem 0.7rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    .filter-form button {
+      grid-column: span 2;
+      background: #ad0409;
+      color: white;
+      border: none;
+      padding: 0.7rem;
+      font-weight: 600;
+      font-size: 1.1rem;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      justify-self: center;
+      width: 150px;
+    }
+
+    .filter-form button:hover {
+      background: #ad0409;
+    }
+
+    /* Car List */
+    .car-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .car-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s ease;
+    }
+
+    .car-card:hover {
+      transform: translateY(-6px);
+    }
+
+    .car-images {
+      display: flex;
+      overflow-x: auto;
+      gap: 0.5rem;
+      padding: 0.5rem;
+      background: #f9f9f9;
+    }
+
+    .car-images img {
+      height: 100px;
+      border-radius: 8px;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: transform 0.3s ease;
+      object-fit: cover;
+      width: 140px;
+    }
+
+    .car-images img:hover {
+      transform: scale(1.15);
+    }
+
+    .car-info {
+      padding: 1rem 1.5rem 1.5rem 1.5rem;
+      flex-grow: 1;
+    }
+
+    .car-info h3 {
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #ad0409;
+    }
+
+    .car-info p {
+      margin: 0.2rem 0;
+      font-size: 0.95rem;
+      line-height: 1.3;
+    }
+
+    #lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    #lightbox img {
+      max-width: 90%;
+      max-height: 80%;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+    }
+
+    #lightbox-close {
+      position: fixed;
+      top: 20px;
+      right: 30px;
+      font-size: 3rem;
+      color: white;
+      cursor: pointer;
+      user-select: none;
+      z-index: 10000;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="lightbox" style="display:none;">
+    <span id="lightbox-close">&times;</span>
+    <img id="lightbox-img" src="" alt="Expanded car image" />
+  </div>
+
+  <nav class="navbar">
+    <h1><i class="fas fa-car"></i> Car Info Hub</h1>
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#cars">Cars</a></li>
+      <li><a href="contact.html" target="_parent" rel="noopener noreferrer">Contact</a></li>
+      <li><a href="login.html" target="_blank" rel="noopener noreferrer">Login</a></li>
+    </ul>
+  </nav>
+
+  <section id="home" class="hero">
+    <h2>Explore Classic Muscle Cars</h2>
+    <p>Discover legendary American muscle cars with powerful engines and timeless style.</p>
+  </section>
+
+  <section id="cars">
+    <h2 class="section-title">Featured Muscle Cars</h2>
+
+    <form method="GET" action="#cars" class="filter-form" autocomplete="off">
+      <div>
+        <label for="brand">Brand:</label>
+        <select id="brand" name="brand">
+          <option value="">Any</option>
+          <option value="Ford">Ford</option>
+          <option value="Chevrolet">Chevrolet</option>
+          <option value="Dodge">Dodge</option>
+          <option value="Plymouth">Plymouth</option>
+          <option value="Pontiac">Pontiac</option>
+          <option value="AMC">AMC</option>
+          <option value="Shelby">Shelby</option>
+          <option value="Buick">Buick</option>
+          <option value="Oldsmobile">Oldsmobile</option>
+        </select>
+      </div>
+      <div>
+        <label for="model">Model (contains):</label>
+        <input type="text" id="model" name="model" placeholder="e.g. Mustang" />
+      </div>
+      <div>
+        <label for="prod_year_min">Production Year From:</label>
+        <input type="number" id="prod_year_min" name="prod_year_min" min="1950" max="1980" placeholder="1965" />
+      </div>
+      <div>
+        <label for="prod_year_max">Production Year To:</label>
+        <input type="number" id="prod_year_max" name="prod_year_max" min="1950" max="1980" placeholder="1975" />
+      </div>
+      <div>
+        <label for="price_min">Price Min ($):</label>
+        <input type="number" id="price_min" name="price_min" min="0" placeholder="10000" />
+      </div>
+      <div>
+        <label for="price_max">Price Max ($):</label>
+        <input type="number" id="price_max" name="price_max" min="0" placeholder="50000" />
+      </div>
+      <div style="grid-column: span 2;">
+        <button type="submit">Filter</button>
+      </div>
+    </form>
+
+    <div class="car-list">
+      <!-- Car 1 -->
+      <div class="car-card">
+        <div class="car-images">
+          <img src="https://www.gallery-aaldering.com/wp-content/uploads/2021/07/ford-mustang-gt-390-fastback-1967.jpg"
+            alt="1967 Ford Mustang 1" />
+          <img src="https://www.gallery-aaldering.com/wp-content/uploads/gallery/27869472/27869472-7.jpg"
+            alt="1967 Ford Mustang 2" />
+          <img src="https://www.gallery-aaldering.com/wp-content/uploads/gallery/27869472/27869472-2.jpg"
+            alt="1967 Ford Mustang 3" />
+        </div>
+        <div class="car-info">
+          <h3>Ford Mustang GT (1967)</h3>
+          <p><strong>Brand:</strong> Ford</p>
+          <p><strong>Model:</strong> Mustang GT</p>
+          <p><strong>Production Year:</strong> 1967</p>
+          <p><strong>Price:</strong> $35,000</p>
+          <p><em>Iconic American muscle car, powerful V8 engine, and classic design.</em></p>
+        </div>
+      </div>
+
+      <!-- Car 2 -->
+      <div class="car-card">
+        <div class="car-images">
+          <img
+            src="https://www.gallery-aaldering.com/wp-content/uploads/2023/11/chevrolet-camaro-rs-rally-sport-1968.jpg?v=6"
+            alt="1968 Chevrolet Camaro 1" />
+          <img src="https://www.gallery-aaldering.com/wp-content/uploads/gallery/35027213/35027213-7.jpg?v=6"
+            alt="1968 Chevrolet Camaro 2" />
+          <img src="https://www.gallery-aaldering.com/wp-content/uploads/gallery/35027213/35027213-2.jpg?v=6"
+            alt="1968 Chevrolet Camaro 3" />
+        </div>
+        <div class="car-info">
+          <h3>Chevrolet Camaro SS (1968)</h3>
+          <p><strong>Brand:</strong> Chevrolet</p>
+          <p><strong>Model:</strong> Camaro SS</p>
+          <p><strong>Production Year:</strong> 1968</p>
+          <p><strong>Price:</strong> $40,000</p>
+          <p><em>Muscle car rival to Mustang with aggressive styling and strong V8.</em></p>
+        </div>
+      </div>
+
+      <!-- Car 3 -->
+      <div class="car-card">
+        <div class="car-images">
+          <img src="https://photos.classiccars.com/cc-temp/listing/195/5776/52912999-1970-dodge-charger-thumb.jpg"
+            alt="1970 Dodge Charger 1" />
+          <img src="https://photos.classiccars.com/cc-temp/listing/195/5776/52913188-1970-dodge-charger-thumb.jpg"
+            alt="1970 Dodge Charger 2" />
+          <img src="https://photos.classiccars.com/cc-temp/listing/195/5776/52913159-1970-dodge-charger-thumb.jpg"
+            alt="1970 Dodge Charger 3" />
+        </div>
+        <div class="car-info">
+          <h3>Dodge Charger R/T (1970)</h3>
+          <p><strong>Brand:</strong> Dodge</p>
+          <p><strong>Model:</strong> Charger R/T</p>
+          <p><strong>Production Year:</strong> 1970</p>
+          <p><strong>Price:</strong> $45,000</p>
+          <p><em>Famous muscle car known for its power and "Fast & Furious" fame.</em></p>
+        </div>
+      </div>
+
+      <!-- Car 4 -->
+      <div class="car-card">
+        <div class="car-images">
+          <img
+            src="https://photos.classiccars.com/cc-temp/listing/192/9911/51256367-1970-plymouth-road-runner-thumb.jpg"
+            alt="1970 Plymouth Road Runner 1" />
+          <img
+            src="https://photos.classiccars.com/cc-temp/listing/192/9911/51256370-1970-plymouth-road-runner-thumb.jpg"
+            alt="1970 Plymouth Road Runner 2" />
+          <img
+            src="https://photos.classiccars.com/cc-temp/listing/192/9911/51256369-1970-plymouth-road-runner-thumb.jpg"
+            alt="1970 Plymouth Road Runner 3" />
+        </div>
+        <div class="car-info">
+          <h3>Plymouth Road Runner (1970)</h3>
+          <p><strong>Brand:</strong> Plymouth</p>
+          <p><strong>Model:</strong> Road Runner</p>
+          <p><strong>Production Year:</strong> 1970</p>
+          <p><strong>Price:</strong> $38,000</p>
+          <p><em>Muscle car with cartoon-themed branding and strong performance.</em></p>
+        </div>
+      </div>
+
+      <!-- Car 5 -->
+      <div class="car-card">
+        <div class="car-images">
+          <img src="https://photos.classiccars.com/cc-temp/listing/195/6327/52967258-1969-pontiac-gto-thumb.jpg"
+            alt="1969 Pontiac GTO 1" />
+          <img src="https://photos.classiccars.com/cc-temp/listing/195/6327/52967555-1969-pontiac-gto-thumb.jpg"
+            alt="1969 Pontiac GTO 2" />
+          <img src="https://photos.classiccars.com/cc-temp/listing/195/6327/52967588-1969-pontiac-gto-thumb.jpg"
+            alt="1969 Pontiac GTO 3" />
+        </div>
+        <div class="car-info">
+          <h3>Pontiac GTO (1969)</h3>
+          <p><strong>Brand:</strong> Pontiac</p>
+          <p><strong>Model:</strong> GTO</p>
+          <p><strong>Production Year:</strong> 1969</p>
+          <p><strong>Price:</strong> $42,000</p>
+          <p><em>One of the first muscle cars; powerful V8 and stylish design.</em></p>
+        </div>
+      </div>
+
+      <!-- Car 6 -->
+      <div class="car-card">
+        <div class="car-images">
+          <img src="https://photos.classiccars.com/cc-temp/listing/190/7711/49879286-1971-amc-javelin-thumb.jpg"
+            alt="1969 AMC Javelin 1" />
+          <img src="https://photos.classiccars.com/cc-temp/listing/190/7711/49879289-1971-amc-javelin-thumb.jpg"
+            alt="1969 AMC Javelin 2" />
+          <img src="https://photos.classiccars.com/cc-temp/listing/190/7711/49879288-1971-amc-javelin-thumb.jpg"
+            alt="1969 AMC Javelin 3" />
+        </div>
+        <div class="car-info">
+          <h3>AMC Javelin SST (1969)</h3>
+          <p><strong>Brand:</strong> AMC</p>
+          <p><strong>Model:</strong> Javelin SST</p>
+          <p><strong>Production Year:</strong> 1969</p>
+          <p><strong>Price:</strong> $30,000</p>
+          <p><em>American Motors muscle car with aggressive styling and power.</em></p>
+        </div>
+      </div>
+
+      <!-- Car 7 -->
+      <div class="car-card">
+        <div class="car-images">
+          <img src="https://photos.classiccars.com/cc-temp/listing/195/6059/52981178-1965-shelby-cobra-thumb.jpg"
+            alt="1967 Shelby COBRA 1" />
+          <img src="https://photos.classiccars.com/cc-temp/listing/195/6059/52981174-1965-shelby-cobra-thumb.jpg"
+            alt="1967 Shelby COBRA 2" />
+          <img src="https://photos.classiccars.com/cc-temp/listing/195/6059/52981179-1965-shelby-cobra-thumb.jpg"
+            alt="1967 Shelby COBRA 3" />
+        </div>
+        <div class="car-info">
+          <h3>Shelby COBRA (1967)</h3>
+          <p><strong>Brand:</strong> Shelby</p>
+          <p><strong>Model:</strong> COBRA</p>
+          <p><strong>Production Year:</strong> 1967</p>
+          <p><strong>Price:</strong> $55,000</p>
+          <p><em>High-performance Mustang variant with extreme power and style.</em></p>
+        </div>
+      </div>
+
+      <!-- Car 8 -->
+      <div class="car-card">
+        <div class="car-images">
+          <img src="https://photos.classiccars.com/cc-temp/listing/186/5952/47448331-1970-cadillac-eldorado-thumb.jpg"
+            alt="1970 Cadillac Eldorado 1" />
+          <img src="https://photos.classiccars.com/cc-temp/listing/186/5952/47448335-1970-cadillac-eldorado-thumb.jpg"
+            alt="1970 Cadillac Eldorado 2" />
+          <img src="https://photos.classiccars.com/cc-temp/listing/186/5952/47448310-1970-cadillac-eldorado-thumb.jpg"
+            alt="1970 Cadillac Eldorado 3" />
+        </div>
+        <div class="car-info">
+          <h3>Cadillac Eldorado (1970)</h3>
+          <p><strong>Brand:</strong> Cadillac</p>
+          <p><strong>Model:</strong> Eldorado</p>
+          <p><strong>Production Year:</strong> 1970</p>
+          <p><strong>Price:</strong> $66,000</p>
+          <p><em>Elegancy mixed with extreme power and style.</em></p>
+        </div>
+      </div>
+
+      <!-- Car 9 -->
+      <div class="car-card">
+        <div class="car-images">
+          <img src="https://photos.classiccars.com/cc-temp/listing/189/4961/49156981-1970-plymouth-barracuda-thumb.jpg"
+            alt="1970 Plymouth Barracuda 1" />
+          <img src="https://photos.classiccars.com/cc-temp/listing/189/4961/49156972-1970-plymouth-barracuda-thumb.jpg"
+            alt="1970 Plymouth Barracuda 2" />
+          <img src="https://photos.classiccars.com/cc-temp/listing/189/4961/49156980-1970-plymouth-barracuda-thumb.jpg"
+            alt="1970 Plymouth Barracuda 3" />
+        </div>
+        <div class="car-info">
+          <h3>Plymouth Barracuda (1970)</h3>
+          <p><strong>Brand:</strong> Plymouth</p>
+          <p><strong>Model:</strong> Barracuda</p>
+          <p><strong>Production Year:</strong> 1970</p>
+          <p><strong>Price:</strong> $125,000</p>
+          <p><em>Classic muscle car with sleek styling and powerful performance.</em></p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script>
+    // Get references
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const closeBtn = document.getElementById('lightbox-close');
+
+    // When any car image is clicked
+    document.querySelectorAll('.car-images img').forEach(img => {
+      img.addEventListener('click', () => {
+        lightbox.style.display = 'flex';           // Show lightbox
+        lightboxImg.src = img.src;                  // Set big image source
+        lightboxImg.alt = img.alt;                   // Copy alt text
+      });
+    });
+
+    // Close lightbox on close button click
+    closeBtn.addEventListener('click', () => {
+      lightbox.style.display = 'none';
+      lightboxImg.src = '';
+    });
+
+    // Also close lightbox if user clicks outside the image
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) {
+        lightbox.style.display = 'none';
+        lightboxImg.src = '';
+      }
+    });
+  </script>
+
+</body>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Car Info Hub</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f7eaed;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            background-color: #f7eaed;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+            width: 320px;
+            text-align: center;
+        }
+
+        .login-container h1 {
+            margin-bottom: 24px;
+            font-size: 1.8em;
+            color: #ad0409;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            background: #f7eaed;
+            border: none;
+            border-radius: 6px;
+            color: #080707;
+            font-size: 1em;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background-color: #ad0409;
+            color: #f7eaed;
+            border: none;
+            border-radius: 6px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #ad0409;
+        }
+
+        .info {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #aaa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <h1>Car Info Hub Login</h1>
+
+        <!-- FAKE LOGIN: Only works visually -->
+        <form action="home.html" method="get">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <input type="submit" value="Login">
+        </form>
+
+        <div class="info">
+
+        </div>
+    </div>
+</body>
+
+</html>
